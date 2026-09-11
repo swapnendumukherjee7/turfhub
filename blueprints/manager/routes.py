@@ -6,9 +6,7 @@ from database import get_db, compute_slot_status, turf_review_summary, TIME_SLOT
 
 manager_bp = Blueprint("manager", __name__)
 
-# No real auth in this prototype — the logged-in manager always manages this turf.
 CURRENT_TURF_ID = 1
-
 
 @manager_bp.route("/")
 def dashboard():
@@ -150,6 +148,41 @@ def bookings():
     rows = conn.execute(query, params).fetchall()
     conn.close()
     return render_template("manager/bookings.html", bookings=rows, status=status)
+
+@manager_bp.route("/bookings/<int:booking_id>", methods=["GET", "POST"])
+def booking_detail(booking_id):
+    conn = get_db()
+
+    booking = conn.execute(
+        """SELECT bookings.*, customers.name as customer_name,
+        customers.phone as customer_phone, customers.email as customer_email
+        FROM bookings
+        JOIN customers ON customers.id = bookings.customer_id
+        WHERE bookings.id=? AND bookings.turf_id=?""",
+        (booking_id, CURRENT_TURF_ID)
+    ).fetchone()
+
+    if not booking:
+        conn.close()
+        return render_template("404.html"), 404
+
+    if request.method == "POST":
+        action = request.form.get("action")
+
+        if action in ["confirmed", "completed", "cancelled"]:
+            conn.execute(
+                "UPDATE bookings SET status=? WHERE id=? AND turf_id=?",
+                (action, booking_id, CURRENT_TURF_ID)
+            )
+            conn.commit()
+            conn.close()
+
+            flash(f"Booking marked as {action}.", "success")
+            return redirect(url_for("manager.booking_detail", booking_id=booking_id))
+
+    conn.close()
+
+    return render_template("manager/booking_detail.html", booking=booking)
 
 
 @manager_bp.route("/reviews")
