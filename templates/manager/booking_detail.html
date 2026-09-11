@@ -1,0 +1,71 @@
+{% extends "base_manager.html" %}
+{% block title %}Booking Details — TurfHub{% endblock %}
+{% block manager_title %}Booking Details{% endblock %}
+{% block manager_subtitle %}Review and manage this booking{% endblock %}
+{% block manager_content %}
+
+<div class="panel">
+  <div class="panel-head">
+    <h3>Booking #{{ booking.id }}</h3>
+    <span class="status-badge">{{ booking.status|capitalize }}</span>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="detail-group">
+        <div class="detail-label">Customer</div>
+        <div class="detail-value">{{ booking.customer_name }}</div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Phone</div>
+        <div class="detail-value">{{ booking.customer_phone }}</div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Email</div>
+        <div class="detail-value">{{ booking.customer_email }}</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="detail-group">
+        <div class="detail-label">Date</div>
+        <div class="detail-value">{{ booking.booking_date }}</div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Time</div>
+        <div class="detail-value">{{ booking.time_slot }}</div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Players</div>
+        <div class="detail-value">{{ booking.players }}</div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Amount</div>
+        <div class="detail-value">₹{{ booking.amount }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    {% if booking.status != "cancelled" %}
+    <form method="POST">
+      <input type="hidden" name="action" value="confirmed">
+      <button class="btn btn-primary" type="submit">Confirm Booking</button>
+    </form>
+
+    <form method="POST">
+      <input type="hidden" name="action" value="cancelled">
+      <button class="btn btn-outline" type="submit">Cancel Booking</button>
+    </form>
+    {% endif %}
+
+    <a class="btn btn-outline" href="{{ url_for('manager.bookings') }}">Back to Bookings</a>
+  </div>
+</div>
+
+{% endblock %}
