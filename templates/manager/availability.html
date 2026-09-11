@@ -1,0 +1,50 @@
+{% extends "base_manager.html" %}
+{% block title %}Availability — TurfHub Manager{% endblock %}
+{% block manager_title %}Availability{% endblock %}
+{% block manager_subtitle %}Manage time slots — evenings get the most demand{% endblock %}
+{% block manager_content %}
+
+<div class="date-strip">
+  {% for d in next_7_days %}
+  <a class="date-pill {{ 'active' if d==q_date }}" href="{{ url_for('manager.availability', date=d) }}">{{ d[5:] }}</a>
+  {% endfor %}
+</div>
+
+<div class="panel">
+  <h3>Morning</h3>
+  <div class="slot-grid">
+    {% for slot, status in morning %}
+    <form method="post" class="slot-form-trigger" style="margin:0;">
+      <input type="hidden" name="date" value="{{ q_date }}">
+      <input type="hidden" name="time_slot" value="{{ slot }}">
+      <input type="hidden" name="action" value="{{ 'unblock' if status=='blocked' else 'block' }}">
+      <button type="submit" class="slot {{ status }}" {{ 'disabled' if status=='booked' }}
+        title="{{ bookings_by_slot.get(slot, '') if status=='booked' else ('Click to reopen' if status=='blocked' else 'Click to block') }}">
+        {{ slot.split(' - ')[0] }}
+        {% if status=='booked' %}<div class="cell-muted" style="font-size:0.6rem;">{{ bookings_by_slot.get(slot,'') }}</div>{% endif %}
+      </button>
+    </form>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="panel">
+  <h3>Evening <span class="badge badge-pending">Peak demand</span></h3>
+  <div class="slot-grid">
+    {% for slot, status in evening %}
+    <form method="post" class="slot-form-trigger" style="margin:0;">
+      <input type="hidden" name="date" value="{{ q_date }}">
+      <input type="hidden" name="time_slot" value="{{ slot }}">
+      <input type="hidden" name="action" value="{{ 'unblock' if status=='blocked' else 'block' }}">
+      <button type="submit" class="slot {{ status }}" {{ 'disabled' if status=='booked' }}
+        title="{{ bookings_by_slot.get(slot, '') if status=='booked' else ('Click to reopen' if status=='blocked' else 'Click to block') }}">
+        {{ slot.split(' - ')[0] }}
+        {% if status=='booked' %}<div class="cell-muted" style="font-size:0.6rem;">{{ bookings_by_slot.get(slot,'') }}</div>{% endif %}
+      </button>
+    </form>
+    {% endfor %}
+  </div>
+</div>
+
+<p class="muted">Green-free slots are open. Click an open slot to block it, or a blocked slot to reopen it. Booked slots can't be edited here — see Bookings for customer detail.</p>
+{% endblock %}

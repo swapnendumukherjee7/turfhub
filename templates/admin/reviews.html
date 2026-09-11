@@ -1,0 +1,27 @@
+{% extends "base_admin.html" %}
+{% block title %}Reviews — TurfHub Admin{% endblock %}
+{% block admin_title %}Reviews{% endblock %}
+{% block admin_subtitle %}Football-specific feedback across all turfs{% endblock %}
+{% block admin_content %}
+<div class="panel">
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Turf</th><th>Customer</th><th>Pitch</th><th>Lighting</th><th>Cleanliness</th><th>Overall</th><th>Comment</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for r in reviews %}
+        <tr>
+          <td class="cell-name">{{ r.turf_name }}</td>
+          <td>{{ r.customer_name }}</td>
+          <td>{{ r.pitch_quality }}/5</td>
+          <td>{{ r.lighting }}/5</td>
+          <td>{{ r.cleanliness }}/5</td>
+          <td class="stars">★ {{ r.overall }}</td>
+          <td class="cell-muted">{{ r.comment }}</td>
+          <td>{{ r.review_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

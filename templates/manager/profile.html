@@ -1,0 +1,78 @@
+{% extends "base_manager.html" %}
+{% block title %}Turf Profile — TurfHub Manager{% endblock %}
+{% block manager_title %}Turf profile{% endblock %}
+{% block manager_subtitle %}Keep your listing accurate for customers{% endblock %}
+{% block manager_content %}
+
+<form method="post" class="panel">
+  <div class="field">
+    <label>Current photo</label>
+    <img class="current-photo" src="{{ url_for('static', filename='images/' + (turf.image or 'placeholder.jpg')) }}"
+         alt="{{ turf.name }} current photo"
+         onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/placeholder.jpg') }}';">
+  </div>
+  <div class="field">
+    <label>Choose a photo</label>
+    <div class="image-gallery">
+      {% for img in gallery_choices %}
+      <label class="{{ 'selected' if img == turf.image }}">
+        <input type="radio" name="image" value="{{ img }}" {{ 'checked' if img == turf.image }}
+               onchange="document.querySelectorAll('.image-gallery label').forEach(function(l){l.classList.remove('selected')});this.closest('label').classList.add('selected');">
+        <img src="{{ url_for('static', filename='images/' + img) }}" alt="Turf photo option"
+             onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/placeholder.jpg') }}';">
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="field"><label>Turf name</label><input type="text" name="name" value="{{ turf.name }}" required></div>
+    <div class="field"><label>Area</label><input type="text" name="area" value="{{ turf.area }}" required></div>
+  </div>
+  <div class="field"><label>Address</label><input type="text" name="address" value="{{ turf.address }}" required></div>
+  <div class="field"><label>Description</label><textarea name="description" required>{{ turf.description }}</textarea></div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Turf type / size</label>
+      <select name="turf_type">
+        {% for t in ['5-a-side','6-a-side','7-a-side','11-a-side'] %}
+        <option value="{{ t }}" {{ 'selected' if turf.turf_type==t }}>{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label>Surface type</label>
+      <select name="surface_type">
+        {% for s in ['Artificial Turf','Hybrid Grass','Natural Grass'] %}
+        <option value="{{ s }}" {{ 'selected' if turf.surface_type==s }}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="field"><label>Price per hour (₹)</label><input type="number" name="price_per_hour" value="{{ turf.price_per_hour }}" required></div>
+    <div class="field"><label>Contact number</label><input type="text" name="phone" value="{{ turf.phone }}" required></div>
+  </div>
+
+  <div class="form-grid">
+    <div class="field"><label>Opening time</label><input type="time" name="opening_time" value="{{ turf.opening_time }}" required></div>
+    <div class="field"><label>Closing time</label><input type="time" name="closing_time" value="{{ turf.closing_time }}" required></div>
+  </div>
+
+  <div class="field">
+    <label>Facilities</label>
+    <div class="checkbox-grid">
+      {% for f in facility_options %}
+      <label class="checkbox-item">
+        <input type="checkbox" name="facilities" value="{{ f }}" {{ 'checked' if f in current_facilities }}>
+        {{ f }}
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="submit">Save changes</button>
+</form>
+{% endblock %}

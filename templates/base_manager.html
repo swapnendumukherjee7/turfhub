@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body_class %}app-shell{% endblock %}
+{% block content %}
+<div class="shell">
+  <aside class="sidebar sidebar-manager">
+    <div class="sidebar-brand">
+      <span class="brand-mark">TH</span>
+      <div>
+        <div class="brand-name">TurfHub</div>
+        <div class="brand-sub">Turf Manager</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('manager.dashboard') }}" class="{{ 'active' if request.endpoint=='manager.dashboard' }}">Dashboard</a>
+      <a href="{{ url_for('manager.profile') }}" class="{{ 'active' if request.endpoint=='manager.profile' }}">Turf Profile</a>
+      <a href="{{ url_for('manager.availability') }}" class="{{ 'active' if request.endpoint=='manager.availability' }}">Availability</a>
+      <a href="{{ url_for('manager.bookings') }}" class="{{ 'active' if request.endpoint=='manager.bookings' }}">Bookings</a>
+      <a href="{{ url_for('manager.reviews') }}" class="{{ 'active' if request.endpoint=='manager.reviews' }}">Reviews</a>
+    </nav>
+    <div class="sidebar-foot">
+      <a href="{{ url_for('customer.home') }}">&larr; Back to customer app</a>
+    </div>
+  </aside>
+  <main class="main-pane">
+    <header class="topbar">
+      <div>
+        <h1>{% block manager_title %}Dashboard{% endblock %}</h1>
+        <p class="topbar-sub">{% block manager_subtitle %}{% endblock %}</p>
+      </div>
+      <div class="topbar-user">
+        <div class="avatar">M</div>
+        <div>
+          <div class="topbar-user-name">Arjun Rao</div>
+          <div class="topbar-user-role">Turf Manager</div>
+        </div>
+      </div>
+    </header>
+    <div class="main-content">
+      {% block manager_content %}{% endblock %}
+    </div>
+  </main>
+</div>
+{% endblock %}

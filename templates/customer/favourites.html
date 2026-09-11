@@ -1,0 +1,22 @@
+{% extends "base_customer.html" %}
+{% block title %}Favourites — TurfHub{% endblock %}
+{% block customer_content %}
+<div style="padding-top:28px;">
+  <h1>Favourites</h1>
+  <p class="muted">Turfs you've saved for quick access.</p>
+</div>
+
+{% if turfs %}
+<div class="turf-grid">
+  {% for turf in turfs %}
+  {% include "customer/_turf_card.html" %}
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <h3>No favourites yet</h3>
+  <p>Tap the heart on any turf card to save it here.</p>
+  <a class="btn btn-outline" href="{{ url_for('customer.find') }}">Browse turfs</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base_customer.html" %}
+{% block title %}My Profile — TurfHub{% endblock %}
+{% block customer_content %}
+<div style="max-width:480px;margin:0 auto;padding-top:32px;">
+  <h1>My profile</h1>
+  <div class="panel">
+    <div class="summary-row"><span>Name</span><span>{{ customer.name }}</span></div>
+    <div class="summary-row"><span>Email</span><span>{{ customer.email }}</span></div>
+    <div class="summary-row"><span>Phone</span><span>{{ customer.phone }}</span></div>
+    <div class="summary-row"><span>Member since</span><span>{{ customer.joined_date }}</span></div>
+    <div class="summary-row total"><span>Total bookings</span><span>{{ total_bookings }}</span></div>
+  </div>
+  <p class="muted">This is a prototype profile — sign-in and editing are out of scope for the demo.</p>
+</div>
+{% endblock %}

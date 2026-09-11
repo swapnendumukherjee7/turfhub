@@ -1,0 +1,23 @@
+{% extends "base_customer.html" %}
+{% block title %}Booking confirmed — TurfHub{% endblock %}
+{% block customer_content %}
+<div style="max-width:480px;margin:0 auto;padding-top:60px;text-align:center;">
+  <div class="confirm-check">✓</div>
+  <h1>Booking confirmed</h1>
+  <p class="muted">Your slot is locked in. See you on the pitch.</p>
+
+  <div class="panel" style="text-align:left;">
+    <div class="summary-row"><span>Turf</span><span>{{ booking.turf_name }}</span></div>
+    <div class="summary-row"><span>Location</span><span>{{ booking.area }}</span></div>
+    <div class="summary-row"><span>Date</span><span>{{ booking.booking_date }}</span></div>
+    <div class="summary-row"><span>Time</span><span>{{ booking.time_slot }}</span></div>
+    <div class="summary-row"><span>Players</span><span>{{ booking.players }}</span></div>
+    <div class="summary-row total"><span>Amount</span><span>₹{{ booking.amount }}</span></div>
+  </div>
+
+  <div style="display:flex;gap:10px;justify-content:center;">
+    <a class="btn btn-primary" href="{{ url_for('customer.my_bookings') }}">View my bookings</a>
+    <a class="btn btn-outline" href="{{ url_for('customer.find') }}">Find another turf</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base_customer.html" %}
+{% block title %}Find a turf — TurfHub{% endblock %}
+{% block customer_content %}
+<div style="padding-top:28px;">
+  <h1>Find a turf</h1>
+  <p class="muted">{{ turfs|length }} turf{{ 's' if turfs|length != 1 }} match your filters.</p>
+</div>
+
+<form class="filter-bar" method="get">
+  <select name="area">
+    <option value="">All areas</option>
+    {% for a in areas %}<option value="{{ a }}" {{ 'selected' if filters.area==a }}>{{ a }}</option>{% endfor %}
+  </select>
+  <select name="turf_type">
+    <option value="">All formats</option>
+    {% for t in turf_types %}<option value="{{ t }}" {{ 'selected' if filters.turf_type==t }}>{{ t }}</option>{% endfor %}
+  </select>
+  <select name="facility">
+    <option value="">Any facility</option>
+    {% for f in facility_options %}<option value="{{ f }}" {{ 'selected' if filters.facility==f }}>{{ f }}</option>{% endfor %}
+  </select>
+  <input type="number" name="price_max" placeholder="Max ₹/hr" value="{{ filters.price_max }}">
+  <select name="rating_min">
+    <option value="">Any rating</option>
+    <option value="4.5" {{ 'selected' if filters.rating_min=='4.5' }}>4.5+</option>
+    <option value="4" {{ 'selected' if filters.rating_min=='4' }}>4.0+</option>
+    <option value="3.5" {{ 'selected' if filters.rating_min=='3.5' }}>3.5+</option>
+  </select>
+  <select name="sort">
+    <option value="rating" {{ 'selected' if filters.sort=='rating' }}>Sort: Top rated</option>
+    <option value="price_low" {{ 'selected' if filters.sort=='price_low' }}>Sort: Price low → high</option>
+    <option value="price_high" {{ 'selected' if filters.sort=='price_high' }}>Sort: Price high → low</option>
+    <option value="distance" {{ 'selected' if filters.sort=='distance' }}>Sort: Nearest</option>
+  </select>
+  <button class="btn btn-primary btn-sm" type="submit">Apply</button>
+  {% if filters.area or filters.turf_type or filters.facility or filters.price_max or filters.rating_min %}
+  <a class="btn btn-ghost btn-sm" href="{{ url_for('customer.find') }}">Clear</a>
+  {% endif %}
+</form>
+
+{% if turfs %}
+<div class="turf-grid">
+  {% for turf in turfs %}
+  {% set show_compare = true %}
+  {% include "customer/_turf_card.html" %}
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <h3>No turfs match those filters</h3>
+  <p>Try widening your price range or picking a different area.</p>
+  <a class="btn btn-outline" href="{{ url_for('customer.find') }}">Reset filters</a>
+</div>
+{% endif %}
+
+<div class="compare-bar" id="compare-bar">
+  <span><span id="compare-count">0</span> turf(s) selected</span>
+  <a class="btn btn-primary btn-sm" id="compare-link" href="#">Compare now</a>
+</div>
+{% endblock %}

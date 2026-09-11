@@ -1,0 +1,61 @@
+{% extends "base_customer.html" %}
+{% block title %}My Bookings — TurfHub{% endblock %}
+{% block customer_content %}
+<div style="padding-top:28px;">
+  <h1>My bookings</h1>
+</div>
+
+<div class="panel">
+  <h3>Upcoming</h3>
+  {% if upcoming %}
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Turf</th><th>Date</th><th>Time</th><th>Players</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        {% for b in upcoming %}
+        <tr>
+          <td class="cell-name">{{ b.turf_name }}<div class="cell-muted">{{ b.area }}</div></td>
+          <td>{{ b.booking_date }}</td>
+          <td>{{ b.time_slot }}</td>
+          <td>{{ b.players }}</td>
+          <td>₹{{ b.amount }}</td>
+          <td><span class="badge badge-confirmed">{{ b.status }}</span></td>
+          <td>
+            <form method="post" action="{{ url_for('customer.cancel_booking', booking_id=b.id) }}">
+              <button class="btn btn-danger btn-sm" type="submit">Cancel</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No upcoming bookings. <a href="{{ url_for('customer.find') }}">Find a turf</a> to book one.</p>
+  {% endif %}
+</div>
+
+<div class="panel">
+  <h3>Past &amp; cancelled</h3>
+  {% if past %}
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Turf</th><th>Date</th><th>Time</th><th>Amount</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for b in past %}
+        <tr>
+          <td class="cell-name">{{ b.turf_name }}</td>
+          <td>{{ b.booking_date }}</td>
+          <td>{{ b.time_slot }}</td>
+          <td>₹{{ b.amount }}</td>
+          <td><span class="badge badge-{{ b.status }}">{{ b.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">Nothing here yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base_admin.html" %}
+{% block title %}Customers — TurfHub Admin{% endblock %}
+{% block admin_title %}Customers{% endblock %}
+{% block admin_subtitle %}Everyone booking turfs through the platform{% endblock %}
+{% block admin_content %}
+<div class="panel">
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Bookings</th><th>Total spend</th></tr></thead>
+      <tbody>
+        {% for c in customers %}
+        <tr>
+          <td class="cell-name">{{ c.name }}</td>
+          <td>{{ c.email }}</td>
+          <td>{{ c.phone }}</td>
+          <td>{{ c.joined_date }}</td>
+          <td>{{ c.booking_count }}</td>
+          <td>₹{{ c.total_spend }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

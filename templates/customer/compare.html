@@ -1,0 +1,71 @@
+{% extends "base_customer.html" %}
+{% block title %}Compare turfs — TurfHub{% endblock %}
+{% block customer_content %}
+<div style="padding-top:28px;">
+  <h1>Compare turfs</h1>
+  <p class="muted">Pick up to three turfs to compare side by side.</p>
+</div>
+
+<form class="filter-bar" method="get" action="{{ url_for('customer.compare') }}" id="compare-picker-form">
+  {% for i in range(3) %}
+  <select name="slot{{ i }}">
+    <option value="">Turf {{ i + 1 }}…</option>
+    {% for t in all_active %}
+    <option value="{{ t.id }}" {{ 'selected' if selected_ids|length > i and selected_ids[i]==t.id }}>{{ t.name }} ({{ t.area }})</option>
+    {% endfor %}
+  </select>
+  {% endfor %}
+  <button class="btn btn-primary btn-sm" type="submit" formaction="javascript:void(0)" onclick="
+    var f=document.getElementById('compare-picker-form');
+    var ids=[f.slot0.value,f.slot1.value,f.slot2.value].filter(Boolean).join(',');
+    window.location = '{{ url_for('customer.compare') }}?ids='+ids;
+  ">Compare</button>
+</form>
+
+{% if turfs %}
+<div class="panel">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th class="feature-col">Feature</th>
+        {% for t in turfs %}
+        <th>
+          <img class="compare-thumb" src="{{ url_for('static', filename='images/' + (t.image or 'placeholder.jpg')) }}"
+               alt="{{ t.name }} turf photo"
+               onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/placeholder.jpg') }}';">
+          <div>{{ t.name }}</div>
+          <div class="muted">{{ t.area }}</div>
+        </th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th class="feature-col">Price / hour</th>
+        {% set min_price = turfs|map(attribute='price_per_hour')|min %}
+        {% for t in turfs %}<td class="{{ 'best' if t.price_per_hour==min_price }}">₹{{ t.price_per_hour }}</td>{% endfor %}</tr>
+      <tr><th class="feature-col">Rating</th>
+        {% set max_rating = turfs|map(attribute='rating')|max %}
+        {% for t in turfs %}<td class="{{ 'best' if t.rating==max_rating }}">★ {{ t.rating }}</td>{% endfor %}</tr>
+      <tr><th class="feature-col">Format</th>{% for t in turfs %}<td>{{ t.turf_type }}</td>{% endfor %}</tr>
+      <tr><th class="feature-col">Surface</th>{% for t in turfs %}<td>{{ t.surface_type }}</td>{% endfor %}</tr>
+      <tr><th class="feature-col">Distance</th>
+        {% set min_dist = turfs|map(attribute='distance_km')|min %}
+        {% for t in turfs %}<td class="{{ 'best' if t.distance_km==min_dist }}">{{ t.distance_km }} km</td>{% endfor %}</tr>
+      {% for facility in ['Floodlights','Parking','Changing Room','Washroom','Seating','Equipment Rental'] %}
+      <tr><th class="feature-col">{{ facility }}</th>
+        {% for t in turfs %}<td>{{ 'Yes' if facility in facilities_list.get(t.id, []) else '—' }}</td>{% endfor %}
+      </tr>
+      {% endfor %}
+      <tr><th class="feature-col"></th>
+        {% for t in turfs %}<td><a class="btn btn-primary btn-sm" href="{{ url_for('customer.turf_detail', turf_id=t.id) }}">View & book</a></td>{% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <h3>Pick turfs to compare</h3>
+  <p>Choose from the dropdowns above, or add turfs to compare from the <a href="{{ url_for('customer.find') }}">Find Turf</a> page.</p>
+</div>
+{% endif %}
+{% endblock %}

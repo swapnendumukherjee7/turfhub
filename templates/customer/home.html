@@ -1,0 +1,52 @@
+{% extends "base_customer.html" %}
+{% block title %}TurfHub — Find your next football turf{% endblock %}
+{% block customer_content %}
+<section class="hero">
+  <h1>Find your next football turf</h1>
+  <p class="lede">Every turf in Bangalore — pricing, availability, facilities and reviews — in one place, so your group can stop juggling five apps to book a game.</p>
+
+  <form class="search-panel" action="{{ url_for('customer.find') }}" method="get">
+    <div class="search-field">
+      <label for="area">Location</label>
+      <select id="area" name="area">
+        <option value="">Any area</option>
+        {% for a in areas %}<option value="{{ a }}">{{ a }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="search-field">
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date">
+    </div>
+    <div class="search-field">
+      <label for="price_max">Max price / hr</label>
+      <input type="number" id="price_max" name="price_max" placeholder="₹2,000">
+    </div>
+    <div class="search-field">
+      <label for="rating_min">Min rating</label>
+      <select id="rating_min" name="rating_min">
+        <option value="">Any rating</option>
+        <option value="4.5">4.5+</option>
+        <option value="4">4.0+</option>
+        <option value="3.5">3.5+</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Search turfs</button>
+  </form>
+
+  <div class="area-chip-row">
+    {% for a in areas %}
+    <a class="area-chip" href="{{ url_for('customer.find', area=a) }}">{{ a }}</a>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="section-head">
+  <h2>Top rated this week</h2>
+  <a class="link" href="{{ url_for('customer.find') }}">See all turfs →</a>
+</div>
+<div class="turf-grid">
+  {% for turf in featured %}
+  {% include "customer/_turf_card.html" %}
+  {% endfor %}
+</div>
+{% endblock %}

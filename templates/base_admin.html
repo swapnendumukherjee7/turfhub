@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block body_class %}app-shell{% endblock %}
+{% block content %}
+<div class="shell">
+  <aside class="sidebar sidebar-admin">
+    <div class="sidebar-brand">
+      <span class="brand-mark">TH</span>
+      <div>
+        <div class="brand-name">TurfHub</div>
+        <div class="brand-sub">Platform Admin</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if request.endpoint=='admin.dashboard' }}">Dashboard</a>
+      <a href="{{ url_for('admin.turfs') }}" class="{{ 'active' if request.endpoint in ['admin.turfs','admin.turf_detail'] }}">Turfs</a>
+      <a href="{{ url_for('admin.customers') }}" class="{{ 'active' if request.endpoint=='admin.customers' }}">Customers</a>
+      <a href="{{ url_for('admin.bookings') }}" class="{{ 'active' if request.endpoint=='admin.bookings' }}">Bookings</a>
+      <a href="{{ url_for('admin.reports') }}" class="{{ 'active' if request.endpoint=='admin.reports' }}">Reports</a>
+      <a href="{{ url_for('admin.reviews') }}" class="{{ 'active' if request.endpoint=='admin.reviews' }}">Reviews</a>
+      <a href="{{ url_for('admin.settings') }}" class="{{ 'active' if request.endpoint=='admin.settings' }}">Settings</a>
+    </nav>
+    <div class="sidebar-foot">
+      <a href="{{ url_for('customer.home') }}">&larr; Back to customer app</a>
+    </div>
+  </aside>
+  <main class="main-pane">
+    <header class="topbar">
+      <div>
+        <h1>{% block admin_title %}Dashboard{% endblock %}</h1>
+        <p class="topbar-sub">{% block admin_subtitle %}{% endblock %}</p>
+      </div>
+      <div class="topbar-user">
+        <div class="avatar">A</div>
+        <div>
+          <div class="topbar-user-name">Admin User</div>
+          <div class="topbar-user-role">Platform Administrator</div>
+        </div>
+      </div>
+    </header>
+    <div class="main-content">
+      {% block admin_content %}{% endblock %}
+    </div>
+  </main>
+</div>
+{% endblock %}

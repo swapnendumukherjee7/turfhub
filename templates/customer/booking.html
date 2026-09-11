@@ -1,0 +1,37 @@
+{% extends "base_customer.html" %}
+{% block title %}Book {{ turf.name }} — TurfHub{% endblock %}
+{% block customer_content %}
+<div style="max-width:520px;margin:0 auto;padding-top:32px;">
+  <h1>Confirm your booking</h1>
+  <p class="muted">{{ turf.name }}, {{ turf.area }}</p>
+
+  <form method="post" class="panel">
+    <div class="field">
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" value="{{ q_date }}" required>
+    </div>
+    <div class="field">
+      <label for="time_slot">Time slot</label>
+      <select id="time_slot" name="time_slot" required>
+        {% if slot %}<option value="{{ slot }}" selected>{{ slot }}</option>{% endif %}
+        {% for s in range(6, 23) %}
+        {% set label = '%02d:00 - %02d:00' % (s, s+1) %}
+        {% if label != slot %}<option value="{{ label }}">{{ label }}</option>{% endif %}
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="players">Number of players</label>
+      <input type="number" id="players" name="players" min="2" max="22" value="10" required>
+    </div>
+
+    <div class="booking-summary">
+      <div class="summary-row"><span>Turf</span><span>{{ turf.name }}</span></div>
+      <div class="summary-row"><span>Rate</span><span>₹{{ turf.price_per_hour }} / hour</span></div>
+      <div class="summary-row total"><span>Total (1 slot)</span><span>₹{{ turf.price_per_hour }}</span></div>
+    </div>
+    <p class="muted" style="margin-bottom:16px;">This is a prototype — no payment is collected. Confirming will simulate the booking.</p>
+    <button class="btn btn-primary btn-block" type="submit">Confirm booking</button>
+  </form>
+</div>
+{% endblock %}

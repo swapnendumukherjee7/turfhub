@@ -1,0 +1,31 @@
+<div class="turf-card">
+  <div class="turf-card-media">
+    <img class="media-photo" src="{{ url_for('static', filename='images/' + (turf.image or 'placeholder.jpg')) }}"
+         alt="{{ turf.name }} turf photo"
+         onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/placeholder.jpg') }}';">
+    <div class="media-overlay"></div>
+    <span class="rating-chip">★ {{ turf.rating }}</span>
+    <form action="{{ url_for('customer.toggle_favourite', turf_id=turf.id) }}" method="post">
+      <button class="fav-chip" type="submit" title="Toggle favourite">♥</button>
+    </form>
+    <span class="price-chip">₹{{ turf.price_per_hour }}/hour</span>
+  </div>
+  <div class="turf-card-body">
+    <h3><a href="{{ url_for('customer.turf_detail', turf_id=turf.id) }}">{{ turf.name }}</a></h3>
+    <div class="turf-meta">{{ turf.area }} · {{ turf.distance_km }} km · {{ turf.turf_type }}</div>
+    <div class="chip-row">
+      {% for f in facilities_list.get(turf.id, [])[:3] %}
+      <span class="chip">{{ f }}</span>
+      {% endfor %}
+    </div>
+    <div class="turf-card-actions">
+      <a class="btn btn-primary btn-sm" href="{{ url_for('customer.turf_detail', turf_id=turf.id) }}">View Turf</a>
+      <a class="btn btn-outline btn-sm" href="{{ url_for('customer.compare', ids=turf.id) }}">Compare</a>
+    </div>
+    {% if show_compare %}
+    <label class="compare-check">
+      <input type="checkbox" value="{{ turf.id }}"> Add to comparison
+    </label>
+    {% endif %}
+  </div>
+</div>

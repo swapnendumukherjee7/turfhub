@@ -1,0 +1,54 @@
+{% extends "base_admin.html" %}
+{% block title %}Turfs — TurfHub Admin{% endblock %}
+{% block admin_title %}Turfs{% endblock %}
+{% block admin_subtitle %}Verify, approve and monitor every turf on the platform{% endblock %}
+{% block admin_content %}
+
+<div class="pill-nav">
+  <a href="{{ url_for('admin.turfs') }}" class="{{ 'active' if not status }}">All</a>
+  <a href="{{ url_for('admin.turfs', status='active') }}" class="{{ 'active' if status=='active' }}">Active</a>
+  <a href="{{ url_for('admin.turfs', status='pending') }}" class="{{ 'active' if status=='pending' }}">Pending</a>
+  <a href="{{ url_for('admin.turfs', status='suspended') }}" class="{{ 'active' if status=='suspended' }}">Suspended</a>
+</div>
+
+<div class="panel">
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Turf</th><th>Location</th><th>Manager</th><th>Status</th><th>Rating</th><th>Bookings</th><th>Verified</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for t in turfs %}
+        <tr>
+          <td class="cell-name">
+            <div class="cell-with-thumb">
+              <img class="table-thumb" src="{{ url_for('static', filename='images/' + (t.image or 'placeholder.jpg')) }}"
+                   alt="{{ t.name }} turf photo"
+                   onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/placeholder.jpg') }}';">
+              <a href="{{ url_for('admin.turf_detail', turf_id=t.id) }}">{{ t.name }}</a>
+            </div>
+          </td>
+          <td>{{ t.area }}</td>
+          <td>{{ t.manager_name }}</td>
+          <td><span class="badge badge-{{ t.status }}">{{ t.status }}</span></td>
+          <td>★ {{ t.rating }}</td>
+          <td>{{ t.booking_count }}</td>
+          <td>{{ 'Yes' if t.verified else 'No' }}</td>
+          <td class="row-actions">
+            {% if t.status == 'pending' %}
+            <form method="post" action="{{ url_for('admin.turf_action', turf_id=t.id, action='approve') }}"><button class="btn btn-success btn-sm">Approve</button></form>
+            <form method="post" action="{{ url_for('admin.turf_action', turf_id=t.id, action='reject') }}"><button class="btn btn-danger btn-sm">Reject</button></form>
+            {% elif t.status == 'active' %}
+            <form method="post" action="{{ url_for('admin.turf_action', turf_id=t.id, action='suspend') }}"><button class="btn btn-danger btn-sm">Suspend</button></form>
+            {% else %}
+            <form method="post" action="{{ url_for('admin.turf_action', turf_id=t.id, action='activate') }}"><button class="btn btn-success btn-sm">Reactivate</button></form>
+            {% endif %}
+            <a class="btn btn-outline btn-sm" href="{{ url_for('admin.turf_detail', turf_id=t.id) }}">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

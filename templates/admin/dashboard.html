@@ -1,0 +1,93 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin Dashboard — TurfHub{% endblock %}
+{% block admin_title %}Dashboard{% endblock %}
+{% block admin_subtitle %}Platform health at a glance{% endblock %}
+{% block admin_content %}
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="stat-label">Total Turfs</div><div class="stat-value">{{ stats.total_turfs }}</div></div>
+  <div class="stat-card"><div class="stat-label">Active Turfs</div><div class="stat-value">{{ stats.active_turfs }}</div></div>
+  <div class="stat-card"><div class="stat-label">Pending Approvals</div><div class="stat-value">{{ stats.pending_turfs }}</div></div>
+  <div class="stat-card"><div class="stat-label">Total Customers</div><div class="stat-value">{{ stats.total_customers }}</div></div>
+  <div class="stat-card"><div class="stat-label">Bookings Today</div><div class="stat-value">{{ stats.bookings_today }}</div></div>
+  <div class="stat-card"><div class="stat-label">Revenue Today</div><div class="stat-value">₹{{ stats.revenue_today }}</div></div>
+  <div class="stat-card"><div class="stat-label">Avg. Turf Rating</div><div class="stat-value">{{ stats.avg_rating }} <span class="unit">/ 5</span></div></div>
+</div>
+
+<div class="two-col">
+  <div>
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Pending turf approvals</h3>
+        <a class="btn btn-outline btn-sm" href="{{ url_for('admin.turfs', status='pending') }}">View all</a>
+      </div>
+      {% if pending_turfs %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Turf</th><th>Manager</th><th>Area</th><th>Price</th><th></th></tr></thead>
+          <tbody>
+            {% for t in pending_turfs %}
+            <tr>
+              <td class="cell-name">
+                <div class="cell-with-thumb">
+                  <img class="table-thumb" src="{{ url_for('static', filename='images/' + (t.image or 'placeholder.jpg')) }}"
+                       alt="{{ t.name }} turf photo"
+                       onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/placeholder.jpg') }}';">
+                  {{ t.name }}
+                </div>
+              </td>
+              <td>{{ t.manager_name }}</td>
+              <td>{{ t.area }}</td>
+              <td>₹{{ t.price_per_hour }}/hr</td>
+              <td class="row-actions">
+                <form method="post" action="{{ url_for('admin.turf_action', turf_id=t.id, action='approve') }}"><button class="btn btn-success btn-sm">Approve</button></form>
+                <form method="post" action="{{ url_for('admin.turf_action', turf_id=t.id, action='reject') }}"><button class="btn btn-danger btn-sm">Reject</button></form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="muted">No turfs waiting on approval right now.</p>
+      {% endif %}
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h3>Recent bookings</h3>
+        <a class="btn btn-outline btn-sm" href="{{ url_for('admin.bookings') }}">View all</a>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Customer</th><th>Turf</th><th>Date</th><th>Time</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            {% for b in recent_bookings %}
+            <tr>
+              <td>{{ b.customer_name }}</td>
+              <td class="cell-name">{{ b.turf_name }}</td>
+              <td>{{ b.booking_date }}</td>
+              <td>{{ b.time_slot }}</td>
+              <td>₹{{ b.amount }}</td>
+              <td><span class="badge badge-{{ b.status }}">{{ b.status }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <h3>Most booked turfs</h3>
+      {% for t in top_turfs %}
+      <div class="hbar-row">
+        <span class="cell-muted">{{ t.name }}</span>
+        <div class="hbar-track"><div class="hbar-fill accent" style="width:{{ (t.n / (top_turfs[0].n or 1) * 100)|round }}%;"></div></div>
+        <span>{{ t.n }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

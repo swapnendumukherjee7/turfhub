@@ -1,0 +1,104 @@
+{% extends "base_customer.html" %}
+{% block title %}{{ turf.name }} — TurfHub{% endblock %}
+{% block customer_content %}
+
+<div class="detail-hero">
+  <img class="media-photo" src="{{ url_for('static', filename='images/' + (turf.image or 'placeholder.jpg')) }}"
+       alt="{{ turf.name }} turf photo"
+       onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/placeholder.jpg') }}';">
+  <div class="media-overlay"></div>
+  <span class="rating-chip">★ {{ turf.rating }} · {{ summary.n }} reviews</span>
+  <div class="detail-hero-title">
+    <h1>{{ turf.name }}</h1>
+    <div class="turf-meta">{{ turf.area }} · {{ turf.distance_km }} km away · {{ turf.turf_type }} · {{ turf.surface_type }}</div>
+  </div>
+</div>
+
+<div class="two-col" style="margin-top:22px;">
+  <div>
+    <div class="panel">
+      <div class="panel-head">
+        <h3>About this turf</h3>
+        <form action="{{ url_for('customer.toggle_favourite', turf_id=turf.id) }}" method="post">
+          <button class="btn btn-outline btn-sm" type="submit">{{ '♥ Saved' if is_favourite else '♡ Save' }}</button>
+        </form>
+      </div>
+      <p>{{ turf.description }}</p>
+      <div class="chip-row">
+        {% for f in facilities %}<span class="chip">{{ f }}</span>{% endfor %}
+      </div>
+      <p class="muted" style="margin-top:12px;">Open {{ turf.opening_time }} – {{ turf.closing_time }} · {{ turf.address }} · {{ turf.phone }}</p>
+    </div>
+
+    <div class="panel">
+      <h3>Check availability &amp; book</h3>
+      <div class="date-strip">
+        {% for d in next_7_days %}
+        <a class="date-pill {{ 'active' if d==selected_date }}" href="{{ url_for('customer.turf_detail', turf_id=turf.id, date=d) }}">
+          {{ d[5:] }}
+        </a>
+        {% endfor %}
+      </div>
+      <div class="slot-grid">
+        {% for slot, status in slots %}
+        <div class="slot {{ status }}" data-slot="{{ slot }}">{{ slot.split(' - ')[0] }}</div>
+        {% endfor %}
+      </div>
+      <input type="hidden" id="selected-slot" value="">
+      <div style="margin-top:16px;">
+        <a class="btn btn-primary" id="book-now-btn" href="{{ url_for('customer.book', turf_id=turf.id, date=selected_date) }}" disabled>
+          Book Now — ₹{{ turf.price_per_hour }}/hr
+        </a>
+      </div>
+      <p class="muted" style="margin-top:8px;">Pick an available slot above, then confirm your booking.</p>
+    </div>
+
+    <div class="panel">
+      <h3>Reviews</h3>
+      <div class="rating-row">
+        <div class="rating-item"><div class="num">{{ summary.pq|round(1) if summary.pq else '—' }}</div><div class="lab">Pitch Quality</div></div>
+        <div class="rating-item"><div class="num">{{ summary.lt|round(1) if summary.lt else '—' }}</div><div class="lab">Lighting</div></div>
+        <div class="rating-item"><div class="num">{{ summary.cl|round(1) if summary.cl else '—' }}</div><div class="lab">Cleanliness</div></div>
+        <div class="rating-item"><div class="num">{{ summary.mt|round(1) if summary.mt else '—' }}</div><div class="lab">Maintenance</div></div>
+        <div class="rating-item"><div class="num">{{ summary.fc|round(1) if summary.fc else '—' }}</div><div class="lab">Facilities</div></div>
+        <div class="rating-item"><div class="num">{{ summary.vf|round(1) if summary.vf else '—' }}</div><div class="lab">Value</div></div>
+      </div>
+      {% if reviews %}
+      {% for r in reviews %}
+      <div class="review-card">
+        <div class="review-head">
+          <span class="name">{{ r.customer_name }}</span>
+          <span class="stars">★ {{ r.overall }}</span>
+        </div>
+        <p style="margin:0;">{{ r.comment }}</p>
+        <div class="review-tags">
+          <span>Pitch {{ r.pitch_quality }}/5</span>
+          <span>Lighting {{ r.lighting }}/5</span>
+          <span>Cleanliness {{ r.cleanliness }}/5</span>
+          <span>{{ r.review_date }}</span>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="muted">No reviews yet for this turf.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <h3>Managed by</h3>
+      <p style="color:var(--ink);font-weight:600;margin-bottom:2px;">{{ manager.name }}</p>
+      <p class="muted">{{ manager.phone }}</p>
+      <p class="muted">{{ manager.email }}</p>
+    </div>
+    <div class="panel">
+      <h3>Quick facts</h3>
+      <div class="summary-row"><span>Format</span><span>{{ turf.turf_type }}</span></div>
+      <div class="summary-row"><span>Surface</span><span>{{ turf.surface_type }}</span></div>
+      <div class="summary-row"><span>Price</span><span>₹{{ turf.price_per_hour }}/hr</span></div>
+      <div class="summary-row"><span>Distance</span><span>{{ turf.distance_km }} km</span></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

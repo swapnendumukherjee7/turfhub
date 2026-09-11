@@ -1,0 +1,56 @@
+{% extends "base_admin.html" %}
+{% block title %}Reports — TurfHub Admin{% endblock %}
+{% block admin_title %}Reports &amp; insights{% endblock %}
+{% block admin_subtitle %}Last 14 days of platform activity{% endblock %}
+{% block admin_content %}
+
+<div class="panel">
+  <h3>Bookings over time</h3>
+  <div class="bar-chart">
+    {% for d in bookings_over_time %}
+    <div class="bar-col">
+      <div class="bar" style="height:{{ (d.count / max_day * 130)|round if max_day else 0 }}px;" title="{{ d.count }} bookings"></div>
+      <div class="bar-label">{{ d.date[5:] }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <h3>Most booked turfs</h3>
+    {% for t in most_booked %}
+    <div class="hbar-row">
+      <span class="cell-muted">{{ t.name }}</span>
+      <div class="hbar-track"><div class="hbar-fill" style="width:{{ (t.n / max_turf * 100)|round }}%;"></div></div>
+      <span>{{ t.n }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="panel">
+    <h3>Popular areas</h3>
+    {% for a in popular_areas %}
+    <div class="hbar-row">
+      <span class="cell-muted">{{ a.area }}</span>
+      <div class="hbar-track"><div class="hbar-fill accent" style="width:{{ (a.n / max_area * 100)|round }}%;"></div></div>
+      <span>{{ a.n }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="panel">
+  <h3>Average rating by area</h3>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Area</th><th>Average rating</th></tr></thead>
+      <tbody>
+        {% for a in avg_ratings %}
+        <tr><td class="cell-name">{{ a.area }}</td><td>★ {{ a.avg_r }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

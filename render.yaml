@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: turfhub
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 1 --bind 0.0.0.0:$PORT

@@ -1,0 +1,75 @@
+{% extends "base_manager.html" %}
+{% block title %}Manager Dashboard — TurfHub{% endblock %}
+{% block manager_title %}{{ turf.name }}{% endblock %}
+{% block manager_subtitle %}{{ turf.area }} · Manager dashboard{% endblock %}
+{% block manager_content %}
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="stat-label">Today's Bookings</div><div class="stat-value">{{ today_bookings|length }}</div></div>
+  <div class="stat-card"><div class="stat-label">Today's Revenue</div><div class="stat-value">₹{{ revenue_today }}</div></div>
+  <div class="stat-card"><div class="stat-label">Occupancy Today</div><div class="stat-value">{{ occupancy }}<span class="unit">%</span></div></div>
+  <div class="stat-card"><div class="stat-label">Average Rating</div><div class="stat-value">{{ turf.rating }} <span class="unit">/ 5</span></div></div>
+</div>
+
+<div class="two-col">
+  <div>
+    <div class="panel">
+      <div class="panel-head"><h3>Today's bookings</h3></div>
+      {% if today_bookings %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Time</th><th>Customer</th><th>Players</th><th>Amount</th></tr></thead>
+          <tbody>
+            {% for b in today_bookings %}
+            <tr><td>{{ b.time_slot }}</td><td>{{ b.customer_name }}</td><td>{{ b.players }}</td><td>₹{{ b.amount }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="muted">No bookings for today yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h3>Upcoming bookings</h3>
+        <a class="btn btn-outline btn-sm" href="{{ url_for('manager.bookings') }}">View all</a>
+      </div>
+      {% if upcoming_bookings %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Time</th><th>Customer</th><th>Amount</th></tr></thead>
+          <tbody>
+            {% for b in upcoming_bookings %}
+            <tr><td>{{ b.booking_date }}</td><td>{{ b.time_slot }}</td><td>{{ b.customer_name }}</td><td>₹{{ b.amount }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="muted">Nothing on the books yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <h3>Customer feedback</h3>
+      <div class="rating-row" style="justify-content:flex-start;gap:16px;">
+        <div class="rating-item"><div class="num">{{ summary.pq|round(1) if summary.pq else '—' }}</div><div class="lab">Pitch</div></div>
+        <div class="rating-item"><div class="num">{{ summary.lt|round(1) if summary.lt else '—' }}</div><div class="lab">Lighting</div></div>
+        <div class="rating-item"><div class="num">{{ summary.cl|round(1) if summary.cl else '—' }}</div><div class="lab">Clean</div></div>
+      </div>
+      {% for r in recent_reviews %}
+      <div class="review-card">
+        <div class="review-head"><span class="name">{{ r.customer_name }}</span><span class="stars">★ {{ r.overall }}</span></div>
+        <p style="margin:0;">{{ r.comment }}</p>
+      </div>
+      {% else %}
+      <p class="muted">No reviews yet.</p>
+      {% endfor %}
+      <a class="btn btn-outline btn-sm" href="{{ url_for('manager.reviews') }}" style="margin-top:8px;">See all reviews</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

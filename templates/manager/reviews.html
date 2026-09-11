@@ -1,0 +1,35 @@
+{% extends "base_manager.html" %}
+{% block title %}Reviews — TurfHub Manager{% endblock %}
+{% block manager_title %}Reviews{% endblock %}
+{% block manager_subtitle %}Football-specific customer feedback{% endblock %}
+{% block manager_content %}
+
+<div class="panel">
+  <div class="rating-row">
+    <div class="rating-item"><div class="num">{{ summary.pq|round(1) if summary.pq else '—' }}</div><div class="lab">Pitch Quality</div></div>
+    <div class="rating-item"><div class="num">{{ summary.lt|round(1) if summary.lt else '—' }}</div><div class="lab">Lighting</div></div>
+    <div class="rating-item"><div class="num">{{ summary.cl|round(1) if summary.cl else '—' }}</div><div class="lab">Cleanliness</div></div>
+    <div class="rating-item"><div class="num">{{ summary.mt|round(1) if summary.mt else '—' }}</div><div class="lab">Maintenance</div></div>
+    <div class="rating-item"><div class="num">{{ summary.fc|round(1) if summary.fc else '—' }}</div><div class="lab">Facilities</div></div>
+    <div class="rating-item"><div class="num">{{ summary.vf|round(1) if summary.vf else '—' }}</div><div class="lab">Value</div></div>
+  </div>
+</div>
+
+<div class="panel">
+  {% for r in reviews %}
+  <div class="review-card">
+    <div class="review-head"><span class="name">{{ r.customer_name }}</span><span class="stars">★ {{ r.overall }}</span></div>
+    <p style="margin:0;">{{ r.comment }}</p>
+    <div class="review-tags">
+      <span>Pitch {{ r.pitch_quality }}/5</span>
+      <span>Lighting {{ r.lighting }}/5</span>
+      <span>Cleanliness {{ r.cleanliness }}/5</span>
+      <span>Maintenance {{ r.maintenance }}/5</span>
+      <span>{{ r.review_date }}</span>
+    </div>
+  </div>
+  {% else %}
+  <p class="muted">No reviews yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

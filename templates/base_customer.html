@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block body_class %}customer-app{% endblock %}
+{% block content %}
+<header class="topnav">
+  <a href="{{ url_for('customer.home') }}" class="topnav-brand">
+    <span class="brand-mark">TH</span> TurfHub
+  </a>
+  <nav class="topnav-links">
+    <a href="{{ url_for('customer.home') }}" class="{{ 'active' if request.endpoint=='customer.home' }}">Home</a>
+    <a href="{{ url_for('customer.find') }}" class="{{ 'active' if request.endpoint=='customer.find' }}">Find Turf</a>
+    <a href="{{ url_for('customer.compare') }}" class="{{ 'active' if request.endpoint=='customer.compare' }}">Compare</a>
+    <a href="{{ url_for('customer.my_bookings') }}" class="{{ 'active' if request.endpoint=='customer.my_bookings' }}">My Bookings</a>
+    <a href="{{ url_for('customer.favourites') }}" class="{{ 'active' if request.endpoint=='customer.favourites' }}">Favourites</a>
+  </nav>
+  <a href="{{ url_for('customer.profile') }}" class="topnav-profile">RV</a>
+</header>
+<main class="customer-main">
+  {% block customer_content %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div>
+    <strong>TurfHub</strong> — one place to find, compare and book football turfs across Bangalore.
+  </div>
+  <div class="footer-links">
+    <a href="{{ url_for('manager.dashboard') }}">Turf Manager Login</a>
+    <a href="{{ url_for('admin.dashboard') }}">Admin Login</a>
+  </div>
+</footer>
+{% endblock %}
