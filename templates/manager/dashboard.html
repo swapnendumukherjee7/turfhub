@@ -75,7 +75,7 @@
     <div class="panel">
       <div class="panel-head">
         <h3>Today's bookings</h3>
-        <a class="btn btn-outline btn-sm" href="{{ url_for('manager.bookings') }}">View all</a>
+        <a class="btn btn-outline btn-sm" href="{{ url_for('manager.booking_detail', booking_id=b.id) }}">View</a>
       </div>
 
       {% if today_bookings %}
@@ -136,7 +136,7 @@
   <td>{{ b.customer_name }}</td>
   <td>₹{{ b.amount }}</td>
   <td>
-    <a class="btn btn-outline btn-sm" href="{{ url_for('manager.bookings') }}">View</a>
+    <a class="btn btn-outline btn-sm" href="{{ url_for('manager.booking_detail', booking_id=b.id) }}">View</a>
   </td>
 </tr>
             {% endfor %}
