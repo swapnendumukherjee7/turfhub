@@ -75,32 +75,32 @@
     <div class="panel">
       <div class="panel-head">
         <h3>Today's bookings</h3>
-        <a class="btn btn-outline btn-sm" href="{{ url_for('manager.booking_detail', booking_id=b.id) }}">View</a>
+        <a class="btn btn-outline btn-sm" href="{{ url_for('manager.bookings') }}">View all</a>
       </div>
 
       {% if today_bookings %}
       <div class="table-wrap">
         <table class="data-table">
           <thead>
-  <tr>
-    <th>Time</th>
-    <th>Customer</th>
-    <th>Players</th>
-    <th>Amount</th>
-    <th>Action</th>
-  </tr>
-</thead>
+            <tr>
+              <th>Time</th>
+              <th>Customer</th>
+              <th>Players</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+          </thead>
           <tbody>
             {% for b in today_bookings %}
             <tr>
-  <td>{{ b.time_slot }}</td>
-  <td>{{ b.customer_name }}</td>
-  <td>{{ b.players }}</td>
-  <td>₹{{ b.amount }}</td>
-  <td>
-    <a class="btn btn-outline btn-sm" href="{{ url_for('manager.bookings') }}">View</a>
-  </td>
-</tr>
+              <td>{{ b.time_slot }}</td>
+              <td>{{ b.customer_name }}</td>
+              <td>{{ b.players }}</td>
+              <td>₹{{ b.amount }}</td>
+              <td>
+                <a class="btn btn-outline btn-sm" href="{{ url_for('manager.booking_detail', booking_id=b.id) }}">View</a>
+              </td>
+            </tr>
             {% endfor %}
           </tbody>
         </table>
@@ -120,25 +120,25 @@
       <div class="table-wrap">
         <table class="data-table">
           <thead>
-  <tr>
-    <th>Date</th>
-    <th>Time</th>
-    <th>Customer</th>
-    <th>Amount</th>
-    <th>Action</th>
-  </tr>
-</thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+          </thead>
           <tbody>
             {% for b in upcoming_bookings %}
             <tr>
-  <td>{{ b.booking_date }}</td>
-  <td>{{ b.time_slot }}</td>
-  <td>{{ b.customer_name }}</td>
-  <td>₹{{ b.amount }}</td>
-  <td>
-    <a class="btn btn-outline btn-sm" href="{{ url_for('manager.booking_detail', booking_id=b.id) }}">View</a>
-  </td>
-</tr>
+              <td>{{ b.booking_date }}</td>
+              <td>{{ b.time_slot }}</td>
+              <td>{{ b.customer_name }}</td>
+              <td>₹{{ b.amount }}</td>
+              <td>
+                <a class="btn btn-outline btn-sm" href="{{ url_for('manager.booking_detail', booking_id=b.id) }}">View</a>
+              </td>
+            </tr>
             {% endfor %}
           </tbody>
         </table>
