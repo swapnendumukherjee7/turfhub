@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // --- Compare selection cap (find page) -------------------------------
+  
   var compareBoxes = document.querySelectorAll(".compare-check input[type=checkbox]");
   var compareBar = document.getElementById("compare-bar");
   var compareLink = document.getElementById("compare-link");
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   refreshCompareBar();
 
-  // --- Availability grid quick action (manager) -------------------------
+  
   document.querySelectorAll(".slot-form-trigger").forEach(function (el) {
     el.addEventListener("click", function () {
       el.closest("form").submit();
