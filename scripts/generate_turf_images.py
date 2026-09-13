@@ -31,15 +31,14 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
 sys.path.insert(0, PROJECT_DIR)
 
-from database import TURFS  # noqa: E402  (needs PROJECT_DIR on sys.path)
+from database import TURFS  
 
 OUT_DIR = os.path.join(PROJECT_DIR, "static", "images")
 FONT_BOLD = os.path.join(SCRIPT_DIR, "fonts", "BigShoulders-Bold.ttf")
 
 W, H = 900, 560
 
-# Two green tones per "palette" so every turf looks a little different
-# while staying inside the site's pitch-green identity.
+
 PALETTES = [
     ((27, 74, 54), (34, 90, 65)),
     ((22, 66, 48), (30, 82, 59)),
@@ -58,7 +57,7 @@ def font(size):
 
 def draw_stripes(draw, palette, w=W, h=H, band=46):
     light, dark = palette
-    # Diagonal mowed-grass stripes.
+
     i = 0
     x = -h
     while x < w + h:
@@ -76,16 +75,16 @@ def draw_pitch_markings(draw, w=W, h=H, margin=46, alpha_img=None):
     lw = 3
     overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     od = ImageDraw.Draw(overlay)
-    # Boundary
+    
     od.rectangle([margin, margin, w - margin, h - margin], outline=line_color, width=lw)
-    # Halfway line
+    
     mid_x = w // 2
     od.line([(mid_x, margin), (mid_x, h - margin)], fill=line_color, width=lw)
-    # Centre circle + spot
+    
     r = 70
     od.ellipse([mid_x - r, h // 2 - r, mid_x + r, h // 2 + r], outline=line_color, width=lw)
     od.ellipse([mid_x - 4, h // 2 - 4, mid_x + 4, h // 2 + 4], fill=line_color)
-    # Penalty boxes each end
+    
     box_w, box_h = 70, 220
     od.rectangle([margin, h // 2 - box_h // 2, margin + box_w, h // 2 + box_h // 2], outline=line_color, width=lw)
     od.rectangle([w - margin - box_w, h // 2 - box_h // 2, w - margin, h // 2 + box_h // 2], outline=line_color, width=lw)
@@ -96,14 +95,14 @@ def add_floodlights(base, w=W, h=H):
     draw = ImageDraw.Draw(base, "RGBA")
     positions = [(60, 40), (w - 60, 40)]
     for x, y in positions:
-        # glow
+        
         glow = Image.new("RGBA", (w, h), (0, 0, 0, 0))
         gd = ImageDraw.Draw(glow)
         gd.ellipse([x - 90, y - 60, x + 90, y + 60], fill=(255, 227, 173, 70))
         glow = glow.filter(ImageFilter.GaussianBlur(30))
         base.alpha_composite(glow)
         draw = ImageDraw.Draw(base, "RGBA")
-        # pole + lamp head
+        
         draw.rectangle([x - 3, y, x + 3, y + 90], fill=(20, 24, 20, 255))
         draw.rectangle([x - 26, y - 14, x + 26, y + 6], fill=(30, 34, 30, 255))
         for lx in range(x - 20, x + 21, 10):
@@ -154,7 +153,7 @@ def make_turf_image(name, area, price, evening, palette, path, label=True):
     base.alpha_composite(markings)
     if evening:
         add_floodlights(base)
-    # soft vignette for depth
+    
     shade = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(shade).rectangle([0, 0, W, H], fill=(0, 0, 0, 0))
     if label:
@@ -163,13 +162,13 @@ def make_turf_image(name, area, price, evening, palette, path, label=True):
 
 
 def make_placeholder(path):
-    palette = ((70, 78, 72), (84, 92, 86))  # desaturated so it reads as "missing", not just another turf
+    palette = ((70, 78, 72), (84, 92, 86))  
     base = Image.new("RGBA", (W, H), palette[0] + (255,))
     draw = ImageDraw.Draw(base)
     draw_stripes(draw, palette, band=60)
     markings = draw_pitch_markings(draw)
     base.alpha_composite(markings)
-    # Simple ball icon
+    
     cx, cy, r = W // 2, H // 2 - 20, 46
     draw = ImageDraw.Draw(base, "RGBA")
     draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(255, 255, 255, 235), outline=(40, 46, 40, 255), width=3)
@@ -193,7 +192,7 @@ def main():
         make_turf_image(name, area, price, evening, palette, out_path)
         print("wrote", out_path)
 
-    # A handful of unlabeled alternates a manager can switch their listing to.
+    
     for i in range(1, 5):
         palette = PALETTES[(i + 1) % len(PALETTES)]
         evening = (i % 2 == 0)
