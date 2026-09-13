@@ -1,18 +1,3 @@
-"""
-app.py
-------
-Entry point for the TurfHub prototype. Run with:
-
-    python app.py
-
-This will seed a fresh SQLite database on every start (fine for a
-demo/prototype) and serve the three interfaces:
-
-    /admin      – Platform Admin
-    /manager    – Turf Manager
-    /            – Customer app
-"""
-
 import os
 from flask import Flask, render_template
 
