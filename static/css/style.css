@@ -1,8 +1,4 @@
-/* =========================================================
-   TurfHub design tokens
-   A pitch-green / whistle-orange sports-tech system used
-   consistently across the Admin, Manager and Customer apps.
-   ========================================================= */
+
 :root {
   --bg: #F4F7F1;
   --bg-alt: #FFFFFF;
@@ -64,7 +60,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-family: var(--font-display); font-weight: 700; font-size: 1rem;
 }
 
-/* ---------- Buttons ---------- */
+
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   padding: 10px 18px; border-radius: var(--radius-sm);
@@ -87,7 +83,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 .btn-block { width: 100%; }
 .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
 
-/* ---------- Badges ---------- */
 .badge {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 3px 10px; border-radius: 999px; font-size: 0.76rem; font-weight: 600;
@@ -97,7 +92,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .badge-suspended, .badge-cancelled { background: var(--danger-soft); color: var(--danger); }
 .badge-neutral { background: #EDF1EA; color: var(--ink-soft); }
 
-/* ---------- Flash messages ---------- */
+
 .flash-stack { position: fixed; top: 16px; right: 16px; z-index: 200; display: grid; gap: 8px; }
 .flash {
   background: var(--pitch-900); color: #fff; padding: 10px 16px; border-radius: var(--radius-sm);
@@ -106,9 +101,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .flash-error { background: var(--danger); }
 .flash-success { background: var(--success); }
 
-/* =========================================================
-   Admin / Manager dashboard shell
-   ========================================================= */
+
 .shell { display: flex; min-height: 100vh; }
 .sidebar {
   width: 240px; flex-shrink: 0; background: var(--pitch-900); color: #EAF1EA;
@@ -141,7 +134,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .topbar-user-role { font-size: 0.76rem; color: var(--ink-faint); }
 .main-content { padding: 28px 32px 60px; }
 
-/* ---------- Stat cards ---------- */
+
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 26px; }
 .stat-card {
   background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius-md);
@@ -151,7 +144,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .stat-value { font-family: var(--font-display); font-size: 1.9rem; color: var(--pitch-900); font-weight: 700; }
 .stat-value .unit { font-size: 1rem; color: var(--ink-faint); font-family: var(--font-body); font-weight: 500; }
 
-/* ---------- Panels / cards ---------- */
+
 .panel {
   background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius-md);
   padding: 20px 22px; margin-bottom: 20px; box-shadow: var(--shadow-card);
@@ -161,7 +154,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: start; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
 
-/* ---------- Tables ---------- */
+
 .table-wrap { overflow-x: auto; }
 table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .data-table th {
@@ -180,7 +173,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 }
 .cell-with-thumb { display: flex; align-items: center; gap: 10px; }
 
-/* ---------- Filter bar ---------- */
+
 .filter-bar {
   display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px;
   background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius-md);
@@ -191,7 +184,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
   font-family: var(--font-body); font-size: 0.85rem; background: #fff; color: var(--ink);
 }
 
-/* ---------- Simple bar chart (no JS libraries needed) ---------- */
+
 .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 160px; padding-top: 10px; }
 .bar-chart .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
 .bar-chart .bar { width: 100%; max-width: 26px; background: var(--accent); border-radius: 4px 4px 0 0; transition: height .3s ease; }
@@ -201,9 +194,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .hbar-fill { background: var(--pitch-700); height: 100%; border-radius: 6px; }
 .hbar-row .hbar-fill.accent { background: var(--accent); }
 
-/* =========================================================
-   Customer app
-   ========================================================= */
+
 .topnav {
   display: flex; align-items: center; justify-content: space-between;
   padding: 16px 40px; background: var(--bg-alt); border-bottom: 1px solid var(--line);
@@ -228,7 +219,6 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .footer-links { display: flex; gap: 18px; }
 .footer-links a:hover { color: var(--pitch-900); }
 
-/* ---------- Hero ---------- */
 .hero { padding: 56px 0 30px; }
 .hero h1 { font-size: 3rem; max-width: 620px; line-height: 1.05; }
 .hero p.lede { font-size: 1.05rem; max-width: 520px; }
@@ -253,7 +243,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 }
 .area-chip:hover { border-color: var(--pitch-900); color: var(--pitch-900); }
 
-/* ---------- Turf cards ---------- */
+
 .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 40px 0 16px; }
 .section-head .link { font-size: 0.88rem; color: var(--accent-dark); font-weight: 600; }
 
@@ -296,7 +286,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .turf-card-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 6px; }
 .compare-check { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--ink-faint); margin-top: 4px; }
 
-/* ---------- Turf detail ---------- */
+
 .detail-hero {
   border-radius: var(--radius-lg); overflow: hidden; height: 260px;
   background: repeating-linear-gradient(115deg, var(--pitch-700) 0 34px, var(--pitch-800) 34px 68px);
@@ -338,7 +328,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .review-head .name { font-weight: 600; color: var(--pitch-900); }
 .review-tags { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.74rem; color: var(--ink-faint); margin-top: 6px; }
 
-/* ---------- Comparison table ---------- */
+
 .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .compare-table th, .compare-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); font-size: 0.88rem; text-align: left; }
 .compare-table th.feature-col { width: 160px; color: var(--ink-faint); font-weight: 600; font-size: 0.78rem; }
@@ -346,7 +336,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .compare-table td.best { color: var(--success); font-weight: 700; }
 .compare-thumb { width: 100%; max-width: 180px; height: 90px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 6px; }
 
-/* ---------- Forms ---------- */
+
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
 .field label { font-size: 0.82rem; font-weight: 600; color: var(--ink); }
@@ -358,7 +348,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; }
 
-/* ---------- Image gallery picker (manager profile) ---------- */
+
 .image-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
 .image-gallery label {
   position: relative; border-radius: var(--radius-sm); overflow: hidden; cursor: pointer;
@@ -369,7 +359,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .image-gallery label.selected { border-color: var(--accent); }
 .current-photo { width: 100%; max-width: 320px; height: 170px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--line); margin-bottom: 10px; }
 
-/* ---------- Booking / confirmation ---------- */
+
 .booking-summary { background: var(--bg); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px; }
 .summary-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.9rem; }
 .summary-row.total { border-top: 1px solid var(--line-strong); margin-top: 6px; padding-top: 12px; font-weight: 700; color: var(--pitch-900); }
@@ -378,11 +368,11 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
   display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 16px;
 }
 
-/* ---------- Empty state ---------- */
+
 .empty-state { text-align: center; padding: 50px 20px; color: var(--ink-faint); }
 .empty-state h3 { color: var(--ink-soft); }
 
-/* ---------- Misc ---------- */
+
 .pill-nav { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
 .pill-nav a { padding: 7px 14px; border-radius: 999px; font-size: 0.82rem; border: 1px solid var(--line-strong); color: var(--ink-soft); }
 .pill-nav a.active { background: var(--pitch-900); border-color: var(--pitch-900); color: #fff; }
@@ -390,7 +380,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .text-right { text-align: right; }
 .stars { color: var(--amber); font-weight: 700; }
 
-/* ---------- Floating compare bar ---------- */
+
 .compare-bar {
   position: fixed; left: 50%; bottom: -80px; transform: translateX(-50%);
   background: var(--pitch-900); color: #fff; padding: 12px 20px; border-radius: var(--radius-md);
