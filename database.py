@@ -1,21 +1,9 @@
-"""
-database.py
-------------
-All persistence for the TurfHub prototype lives here: schema creation,
-Bangalore-flavoured mock data, and small query helper functions used by
-the admin / manager / customer blueprints.
-
-This is intentionally a single SQLite file with plain sqlite3 (no ORM)
-so the whole data layer is easy to read, replace, or re-seed later.
-"""
-
 import sqlite3
 import random
 from datetime import date, timedelta, datetime
 
 from config import DATABASE_PATH
 
-# Hourly slots the platform sells, 6am to 11pm.
 TIME_SLOTS = [f"{h:02d}:00 - {h+1:02d}:00" for h in range(6, 23)]
 
 FACILITY_OPTIONS = [
@@ -23,12 +11,6 @@ FACILITY_OPTIONS = [
     "Drinking Water", "Seating", "Equipment Rental", "First Aid",
 ]
 
-# Image handling: every turf gets a locally-generated photo (see
-# scripts/generate_turf_images.py) named turf-01.jpg .. turf-10.jpg,
-# matching turfs.id. FALLBACK_IMAGE is used in templates whenever a
-# turf's `image` column is empty or the file can't be found, so the
-# UI never shows a broken-image icon. GALLERY_IMAGES are the extra,
-# unlabeled alternates a manager can switch their listing to.
 FALLBACK_IMAGE = "placeholder.jpg"
 GALLERY_IMAGES = [f"turf-gallery-{i}.jpg" for i in range(1, 5)]
 
@@ -38,12 +20,6 @@ def get_db():
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
-
-
-# ---------------------------------------------------------------------------
-# Schema
-# ---------------------------------------------------------------------------
-
 SCHEMA = """
 DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS blocked_slots;
@@ -265,8 +241,6 @@ def seed_db():
              dist, created),
         )
 
-    # Bookings: a healthy spread across turfs, customers and dates so
-    # dashboards, "today's bookings" and reports all have something to show.
     booking_id = 1
     today_iso = date.today().isoformat()
     for turf_id in range(1, len(TURFS) + 1):
@@ -291,7 +265,7 @@ def seed_db():
             )
             booking_id += 1
 
-    # Make sure "today" always has a few visible bookings for the demo.
+    
     for turf_id in [1, 1, 2, 3, 7]:
         slot = random.choice(TIME_SLOTS)
         customer_id = random.randint(1, len(CUSTOMERS))
@@ -305,13 +279,13 @@ def seed_db():
         )
         booking_id += 1
 
-    # A couple of manager-blocked slots for the availability grid demo.
+    
     conn.execute("INSERT INTO blocked_slots (turf_id, block_date, time_slot) VALUES (1, ?, ?)",
                  (today_iso, "13:00 - 14:00"))
     conn.execute("INSERT INTO blocked_slots (turf_id, block_date, time_slot) VALUES (1, ?, ?)",
                  (today_iso, "14:00 - 15:00"))
 
-    # Reviews for the active, verified turfs.
+    
     review_id = 1
     for turf_id in range(1, len(TURFS) + 1):
         if TURFS[turf_id - 1][7] != "active":
@@ -329,7 +303,7 @@ def seed_db():
             )
             review_id += 1
 
-    # A few favourites for the demo customer (id=1).
+    
     for turf_id in [1, 7, 2]:
         conn.execute("INSERT INTO favourites (customer_id, turf_id) VALUES (1, ?)", (turf_id,))
 
@@ -337,9 +311,6 @@ def seed_db():
     conn.close()
 
 
-# ---------------------------------------------------------------------------
-# Query helpers
-# ---------------------------------------------------------------------------
 
 def compute_slot_status(conn, turf_id, on_date):
     """Return list of (slot, status) for a turf on a given date."""
