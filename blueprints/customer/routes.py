@@ -6,7 +6,7 @@ from database import get_db, compute_slot_status, turf_review_summary, TIME_SLOT
 
 customer_bp = Blueprint("customer", __name__)
 
-# No real auth in this prototype — every visitor is this demo customer.
+
 CURRENT_CUSTOMER_ID = 1
 
 
